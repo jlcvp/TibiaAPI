@@ -37,7 +37,8 @@
     {
         ListReroll = 0,
         BonusReroll = 1,
-        MonsterSelection = 2
+        MonsterSelection = 2,
+        Option = 5
     }
 
     public enum ReportType
@@ -119,7 +120,8 @@
         Delay = 2,
         Effect = 3,
         MissileXY = 4,
-        MissileYX = 5
+        MissileYX = 5,
+        Unknown = 0x83
     }
 
     public enum PreyDataState
@@ -346,6 +348,7 @@
         RotateSouth = 0x71,
         RotateWest = 0x72,
         Teleport = 0x73,
+        CharacterTradeConfigurationAction = 0x76,
         EquipObject = 0x77,
         MoveObject = 0x78,
         LookNpcTrade = 0x79,
@@ -466,6 +469,7 @@
     {
         Invalid = 0x00,
         CreatureData = 0x03,
+        SessionDumpStart = 0x04,
         PendingStateEntered = 0x0A,
         ReadyForSecondaryConnection = 0x0B,
         WorldEntered = 0x0F,
@@ -513,6 +517,7 @@
         OwnOffer = 0x7D,
         CounterOffer = 0x7E,
         CloseTrade = 0x7F,
+        CharacterTradeConfiguration = 0x80,
         Ambiente = 0x82,
         GraphicalEffects = 0x83,
         RemoveGraphicalEffect = 0x84,

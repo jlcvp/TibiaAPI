@@ -19,6 +19,8 @@ namespace OXGaming.TibiaAPI.Network.ServerPackets
         public ushort ChannelId { get; set; }
         public ushort SpeakerLevel { get; set; }
 
+        public bool IsTraded { get; set; }
+
         public Talk(Client client)
         {
             Client = client;
@@ -29,6 +31,10 @@ namespace OXGaming.TibiaAPI.Network.ServerPackets
         {
             StatementId = message.ReadUInt32();
             SpeakerName = message.ReadString();
+            if (Client.VersionNumber >= 125010109 && StatementId != 0)
+            {
+                IsTraded = message.ReadBool();
+            }
             SpeakerLevel = message.ReadUInt16();
             MessageMode = (MessageModeType)message.ReadByte();
             switch (MessageMode)
@@ -77,7 +83,8 @@ namespace OXGaming.TibiaAPI.Network.ServerPackets
                     }
                     break;
                 default:
-                    throw new Exception("[ServerPackets.Talk.ParseFromNetworkMessage] Invalid MessageMode: " + MessageMode.ToString());
+                    Client.Logger.Warning("[ServerPackets.Talk.ParseFromNetworkMessage] Invalid MessageMode: " + MessageMode.ToString());
+                    break;
             }
             Text = message.ReadString();
         }
@@ -87,6 +94,10 @@ namespace OXGaming.TibiaAPI.Network.ServerPackets
             message.Write((byte)ServerPacketType.Talk);
             message.Write(StatementId);
             message.Write(SpeakerName);
+            if (Client.VersionNumber >= 125010109 && StatementId != 0)
+            {
+                message.Write(IsTraded);
+            }
             message.Write(SpeakerLevel);
             message.Write((byte)MessageMode);
             switch (MessageMode)
@@ -134,7 +145,8 @@ namespace OXGaming.TibiaAPI.Network.ServerPackets
                     }
                     break;
                 default:
-                    throw new Exception("[ServerPackets.Talk.AppendToNetworkMessage] Invalid MessageMode: " + MessageMode.ToString());
+                    Client.Logger.Warning("[ServerPackets.Talk.AppendToNetworkMessage] Invalid MessageMode: " + MessageMode.ToString());
+                    break;
             }
             message.Write(Text);
         }
